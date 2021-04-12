@@ -20,11 +20,50 @@ typedef long long ll;
 using namespace std;
 
 
+//=============================================================================
+//--------------------------LETS  GO!!!---------------------------------
+//=============================================================================
 
-int main()
-{
-    // ios::sync_with_stdio(false);
-    // cin.tie(0);
-    
-    return 0;
+ vector<ll> adj[100005];
+ vector<ll> dp(100005, -1);
+
+ ll findLongestPath(ll i){
+
+     if(dp[i]!=-1)
+         return dp[i];
+     else{
+         bool has_neighbours = false;
+         ll result = INT_MIN;
+         FOREACH(neighbour,adj[i]){
+             has_neighbours = true;
+             result = max(result, findLongestPath(neighbour));
+         }
+         if(has_neighbours)
+             return dp[i] = result + 1;
+        else
+            return 0;
+     }
+ }
+ 
+ int main()
+ {
+     // ios::sync_with_stdio(false);
+     // cin.tie(0);
+     ll n, m;
+     cin >> n >> m;
+
+     fo(i, 0, m)
+     {
+         ll x, y;
+         cin >> x >> y;
+         adj[x].push_back(y);
+     }
+     ll result = INT_MIN;
+
+     fo(i,1,n){
+         result = max(result, findLongestPath(i));
+     }
+
+     cout << result;
+     return 0;
 }
